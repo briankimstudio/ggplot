@@ -9,22 +9,150 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## ggplot으로 그래프 그리기
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+데이터
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+library(ggplot2)
+midwest
 ```
 
-## Including Plots
+점 그래프 
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal)) + geom_point()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+점 그래프, 색상 수정 
+
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal, color=area)) + geom_point()
+```
+
+점 그래프 y축 최소,최대 설정
+
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal)) + geom_point() +
+  xlim(c(0, 0.1)) + ylim(c(0, 1000000))
+```
+
+선 그래프 
+
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal)) + geom_line()
+```
+
+막대 그래프
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_bar(stat="identity")
+```
+
+막대 그래프, 색상 추가
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity")
+```
+
+막대 그래프, 회전
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_bar(stat="identity") +
+  coord_flip()
+```
+
+x, y축 이름 변경
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_bar(stat="identity") +
+  labs(title="Population", x="County", y="Population")
+
+```
+
+
+막대 폭 변경
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  labs(title="Population", x="County", y="Population") +
+  geom_bar(stat="identity", width=0.2) 
+```
+
+
+state별로 poptotal 합
+
+```{r message=FALSE}
+library(tidyverse)
+midwest %>% group_by(state) %>% summarise(all = sum(poptotal)) %>%
+  ggplot(aes(x=state,y=all)) + geom_bar(stat="identity")
+```
+
+범례
+
+```{}
+```
+
+다중 선 그래프 
+
+```{}
+```
+
+
+히스토그램 
+
+```{}
+```
+
+
+그룹별 별도 그래프 
+
+점 그래프, state 별로 분리, 세로
+
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal, color=area)) + geom_point() +
+  facet_grid(state ~ .)
+```
+
+점 그래프, state 별로 분리, 가로
+
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal, color=area)) + geom_point() +
+  facet_grid(. ~ state)
+```
+
+Heat map
+
+```{}
+```
+
+
+산포도 
+
+```{}
+```
+
+추세도 
+
+```{}
+```
+
+
+## 참고자료
+
+* http://r-statistics.co/Complete-Ggplot2-Tutorial-Part1-With-R-Code.html
+* http://www.sthda.com/english/wiki/ggplot2-essentials
+
+
