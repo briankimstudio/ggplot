@@ -1,2 +1,4 @@
 # ggplot
-ggplot 사용법
+
+R에서 ggplot 사용하기
+
