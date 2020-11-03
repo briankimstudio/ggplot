@@ -95,7 +95,7 @@ state별로 poptotal 합
 ```{r message=FALSE}
 library(tidyverse)
 midwest %>% group_by(state) %>% summarise(all = sum(poptotal)) %>%
-  ggplot(aes(x=state,y=all)) + geom_bar(stat="identity")
+  ggplot(aes(x=state,y=all, fill=state)) + geom_bar(stat="identity")
 ```
 
 범례
