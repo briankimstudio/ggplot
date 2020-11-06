@@ -28,42 +28,35 @@ midwest
 
 ```{r}
 library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_point()
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  geom_point()
 ```
 
-### 점 그래프, 색상 수정
-
-x축 레이블 45도 기울이기
+### 색상 수정
 
 ```{r}
 library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal, color=county)) + geom_point() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-```
-
-### 점 그래프 y축 최소,최대 설정
-
-```{r}
-library(ggplot2)
-ggplot(midwest, aes(x=area, y=poptotal)) + geom_point() +
-  xlim(c(0, 0.1)) + ylim(c(0, 1000000))
+ggplot(midwest[1:10,], aes(x=county, y=poptotal, color=county)) + 
+  geom_point()
 ```
 
 ## 선 그래프 
 
 ```{r}
 library(ggplot2)
-ggplot(midwest, aes(x=area, y=poptotal)) + geom_line()
+ggplot(midwest, aes(x=area, y=poptotal)) + 
+  geom_line()
 ```
 
 ## 막대 그래프
 
 ```{r}
 library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_bar(stat="identity")
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  geom_bar(stat="identity")
 ```
 
-### 막대 그래프, 색상 추가
+### 색상 추가
 
 ```{r}
 library(ggplot2)
@@ -71,39 +64,23 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal, fill=county)) +
   geom_bar(stat="identity")
 ```
 
-### 막대 그래프, 회전
-
-```{r}
-library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_bar(stat="identity") +
-  coord_flip()
-```
-
-### x, y축 이름 변경
-
-```{r}
-library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_bar(stat="identity") +
-  labs(title="Population", x="County", y="Population")
-
-```
-
 ### 막대 폭 변경
 
 ```{r}
 library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
-  labs(title="Population", x="County", y="Population") +
+ggplot(midwest[1:10,], aes(x=county, y=poptotal, fill=county)) + 
   geom_bar(stat="identity", width=0.2) 
 ```
 
+### state별로 poptotal 합계
 
-### state별로 poptotal 합
+state 그룹별 합계를 구한 후 그래프에 반영하기
 
 ```{r message=FALSE}
 library(tidyverse)
 midwest %>% group_by(state) %>% summarise(all = sum(poptotal)) %>%
-  ggplot(aes(x=state,y=all, fill=state)) + geom_bar(stat="identity")
+  ggplot(aes(x=state,y=all, fill=state)) + 
+  geom_bar(stat="identity")
 ```
 
 ## 범례
@@ -111,12 +88,43 @@ midwest %>% group_by(state) %>% summarise(all = sum(poptotal)) %>%
 ```{}
 ```
 
-## 축이름 변경
+## 축 수정
+
+### 최대, 최소값 
+
+```{r}
+#library(ggplot2)
+ggplot(midwest, aes(x=area, y=poptotal)) + 
+  geom_point() +
+  xlim(c(0, 0.1)) + ylim(c(0, 1000000))
+```
+
+### 이름
 
 ```{r}
 library(ggplot2)
-ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_point() +
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  geom_bar(stat="identity") +
   labs(title="Population", x="County", y="Population")
+
+```
+
+### x축 레이블 45도 기울이기
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal, color=county)) + 
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+## 회전
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  geom_bar(stat="identity") +
+  coord_flip()
 ```
 
 ## 다중 선 그래프 
@@ -126,7 +134,12 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_point() +
 
 ## 히스토그램 
 
-```{}
+area의 히스토그램
+
+```{r}
+library(ggplot2)
+ggplot(midwest, aes(x=area, fill=area)) + 
+  geom_histogram()
 ```
 
 ## 그룹별 별도 그래프 
@@ -135,7 +148,8 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + geom_point() +
 
 ```{r}
 library(ggplot2)
-ggplot(midwest, aes(x=area, y=poptotal, color=area)) + geom_point() +
+ggplot(midwest, aes(x=area, y=poptotal, color=area)) + 
+  geom_point() +
   facet_grid(state ~ .)
 ```
 
@@ -143,16 +157,27 @@ ggplot(midwest, aes(x=area, y=poptotal, color=area)) + geom_point() +
 
 ```{r}
 library(ggplot2)
-ggplot(midwest, aes(x=area, y=poptotal, color=area)) + geom_point() +
+ggplot(midwest, aes(x=area, y=poptotal, color=area)) + 
+  geom_point() +
   facet_grid(. ~ state)
 ```
 
 ## Heat map
 
-```{}
+```{r}
+library(ggplot2)
+ggplot(midwest,aes(area,popamerindian)) + geom_bin2d(bins=10)
 ```
 
 ## 산포도 
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  geom_point()
+```
+
+다중 산포도를 그릴 경우에는 plot함수가 편리
 
 ```{r}
 library(ggplot2)
@@ -161,7 +186,12 @@ plot(midwest[,4:10])
 
 ## 추세도 
 
-```{}
+회귀선 추가
+
+```{r}
+ggplot(mtcars,aes(x=wt,y=mpg)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
 ```
 
 ## 참고자료
