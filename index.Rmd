@@ -255,6 +255,15 @@ ggplot(midwest, aes(x=area, y=poptotal, color=area)) +
   facet_grid(. ~ state)
 ```
 
+### y축 척도 다양화
+
+```{r}
+library(ggplot2)
+economics %>% pivot_longer(-date,names_to="type",values_to="num") %>%
+  ggplot(aes(date,num,fill=type)) + geom_bar(stat="identity") +
+  facet_wrap(~type, ncol=1,scales = "free")
+```
+
 ## Heat map
 
 ```{r}
