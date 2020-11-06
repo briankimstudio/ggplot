@@ -34,10 +34,20 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal)) +
 
 ### 색상 수정
 
+county 별로 다른 색상
+
 ```{r}
 library(ggplot2)
 ggplot(midwest[1:10,], aes(x=county, y=poptotal, color=county)) + 
   geom_point()
+```
+
+### 점 크기 수정
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal, color=county)) + 
+  geom_point(size=7)
 ```
 
 ## 선 그래프 
@@ -58,10 +68,20 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal)) +
 
 ### 색상 추가
 
+county별 색상 추가
 ```{r}
 library(ggplot2)
 ggplot(midwest[1:10,], aes(x=county, y=poptotal, fill=county)) +
   geom_bar(stat="identity")
+```
+
+### 값 추가
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:5,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=poptotal),vjust=1.5, color="white")
 ```
 
 ### 막대 폭 변경
@@ -78,14 +98,68 @@ state 그룹별 합계를 구한 후 그래프에 반영하기
 
 ```{r message=FALSE}
 library(tidyverse)
+library(ggplot2)
 midwest %>% group_by(state) %>% summarise(all = sum(poptotal)) %>%
   ggplot(aes(x=state,y=all, fill=state)) + 
   geom_bar(stat="identity")
 ```
 
-## 범례
+## 범례 legend
 
-```{}
+### 위치 변경
+
+위
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:5,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=poptotal),vjust=1.5, color="white") +
+  theme(legend.position = "top")
+```
+
+아래
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:5,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=poptotal),vjust=1.5, color="white") +
+  theme(legend.position = "bottom")
+```
+
+### 폰트 변경
+
+파란색, bold체로 변경
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:3,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=poptotal),vjust=1.5, color="white") +
+  theme(legend.position = "bottom") +
+  theme(legend.text = element_text(colour = "blue",face="bold"))
+```
+
+### 순서 변경
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:3,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=poptotal),vjust=1.5, color="white") +
+  theme(legend.position = "bottom") +
+  scale_x_discrete(limits=c("BOND","ADAMS","ALEXANDER"))
+```
+
+### 제거
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:3,], aes(x=county, y=poptotal, fill=county)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=poptotal),vjust=1.5, color="white") +
+  theme(legend.position = "nont")
 ```
 
 ## 축 수정
@@ -101,24 +175,34 @@ ggplot(midwest, aes(x=area, y=poptotal)) +
 
 ### 이름
 
+제목, x축, y축
+
 ```{r}
 library(ggplot2)
 ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
   geom_bar(stat="identity") +
   labs(title="Population", x="County", y="Population")
-
 ```
 
-### x축 레이블 45도 기울이기
+### x축 텍스트 45도 기울이기
 
 ```{r}
 library(ggplot2)
 ggplot(midwest[1:10,], aes(x=county, y=poptotal, color=county)) + 
-  geom_point() +
+  geom_point(size=7) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
 
+### x축 int를 factor로 변경
+
+```{r}
+midwest %>% group_by(inmetro) %>% summarize(pop = sum(poptotal)) %>% 
+  ggplot(aes(inmetro,pop,fill=factor(inmetro))) + geom_bar(stat="identity")
+```
+
 ## 회전
+
+90도 오른쪽으로 회전
 
 ```{r}
 library(ggplot2)
@@ -129,7 +213,16 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal)) +
 
 ## 다중 선 그래프 
 
-```{}
+pivot_longer로 변환해서 그림
+
+```{r}
+economics
+economics %>% pivot_longer(-date,names_to="type",values_to="num")
+```
+
+```{r}
+economics %>% pivot_longer(-date,names_to="type",values_to="num") %>%
+    ggplot(aes(date,num,color=type)) + geom_line()
 ```
 
 ## 히스토그램 
@@ -166,7 +259,8 @@ ggplot(midwest, aes(x=area, y=poptotal, color=area)) +
 
 ```{r}
 library(ggplot2)
-ggplot(midwest,aes(area,popamerindian)) + geom_bin2d(bins=10)
+ggplot(midwest,aes(area,popamerindian)) + 
+  geom_bin2d(bins=10)
 ```
 
 ## 산포도 
