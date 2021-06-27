@@ -5,6 +5,7 @@ date: "11/3/2020"
 output:
   html_document:
     toc: true
+    collapsed: false
     toc_float: true
   pdf_document: 
     latex_engine: xelatex
@@ -173,7 +174,7 @@ ggplot(midwest, aes(x=area, y=poptotal)) +
   xlim(c(0, 0.1)) + ylim(c(0, 1000000))
 ```
 
-### 이름
+### 이름 Title
 
 제목, x축, y축
 
@@ -183,6 +184,19 @@ ggplot(midwest[1:10,], aes(x=county, y=poptotal)) +
   geom_bar(stat="identity") +
   labs(title="Population", x="County", y="Population")
 ```
+
+### 이름 중앙 정렬 
+
+제목, x축, y축
+
+```{r}
+library(ggplot2)
+ggplot(midwest[1:10,], aes(x=county, y=poptotal)) + 
+  geom_bar(stat="identity") +
+  labs(title="Population", x="County", y="Population") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
 
 ### x축 텍스트 45도 기울이기
 
